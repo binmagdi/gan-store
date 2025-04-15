@@ -9,7 +9,7 @@ export default function Home() {
         <UserButton />
         <ThemeToggle />
       </div>
-      <h1 className="font-bold text-sky-400">Welcome to our Store</h1>
+      <h1 className="font-bold text-sky-400">Welcome to Gan Store</h1>
     </div>
   );
 }
