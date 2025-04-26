@@ -5,7 +5,7 @@ import {
   clerkClient,
   DeletedObjectJSON,
 } from "@clerk/nextjs/server";
-import { User } from "@/generated/prisma";
+import { User } from "@prisma/client";
 import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
@@ -42,6 +42,7 @@ export async function POST(req: Request) {
           email: user.email!,
           picture: user.picture!,
           role: user.role || "USER",
+          updatedAt: new Date().toISOString(), // Add updatedAt field
         },
       });
 
