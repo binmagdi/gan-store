@@ -3,12 +3,15 @@
 // DB
 import { db } from "@/lib/db";
 // Types
-import { ProductWithVariantType } from "@/lib/types";
+import {
+  ProductWithVariantType,
+  VariantImageType,
+  VariantSimplified,
+} from "@/lib/types";
 import { generateUniqueSlug } from "@/lib/utils";
 
 // Clerk
 import { currentUser } from "@clerk/nextjs/server";
-
 
 // Slugify
 import slugify from "slugify";
@@ -82,14 +85,12 @@ export const upsertProduct = async (
         create: product.questions.map((question) => ({
           question: question.question,
           answer: question.answer,
-    
         })),
       },
       specs: {
         create: product.product_specs.map((spec) => ({
           name: spec.name,
           value: spec.value,
-    
         })),
       },
       store: { connect: { id: store.id } },
@@ -111,7 +112,6 @@ export const upsertProduct = async (
         create: product.variant_specs.map((spec) => ({
           name: spec.name,
           value: spec.value,
-      
         })),
       },
       images: {
@@ -293,4 +293,99 @@ export const deleteProduct = async (productId: string) => {
   });
 
   return response;
+};
+
+// Function: getProducts
+// Description: Retrieves products based on various filters and returns only variants that match the filters. Supports pagination.
+// Access Level: Public
+// Parameters:
+//   - filters: An object containing filter options (category, subCategory, offerTag, size, onSale, onDiscount, brand, color).
+//   - sortBy: Sort the filtered results (Most popular, New Arivals, Top Rated...).
+//   - page: The current page number for pagination (default = 1).
+//   - pageSize: The number of products per page (default = 10).
+// Returns: An object containing paginated products, filtered variants, and pagination metadata (totalPages, currentPage, pageSize, totalCount).
+
+export const getProducts = async (
+  filters: any = {},
+  sortBy = "",
+  page: number = 1,
+  pageSize: number = 10
+) => {
+  // Default values for page and pageSize
+  const currentPage = page;
+  const limit = pageSize;
+  const skip = (currentPage - 1) * limit;
+
+  // Construct the base query
+  const whereClause: any = {
+    AND: [],
+  };
+
+  // Get all filtered, sorted products
+
+  const products = await db.product.findMany({
+    where: whereClause,
+    take: limit,
+    skip: skip,
+    include: {
+      variants: {
+        include: {
+          sizes: true,
+          images: true,
+          colors: true,
+        },
+      },
+    },
+  });
+
+  // Transform the products with filtered variants into ProductCardType structure
+  const productsWithFilteredVariants = products.map((product) => {
+    // Filter the variants based on the filters
+    const filteredVariants = product.variants;
+
+    // Transform the filtered variants into the VariantSimplified structure
+    const variants: VariantSimplified[] = filteredVariants.map((variant) => ({
+      variantId: variant.id,
+      variantSlug: variant.slug,
+      variantName: variant.variantName,
+      images: variant.images,
+      sizes: variant.sizes,
+    }));
+
+    // Extract variant images for the product
+    const variantImages: VariantImageType[] = filteredVariants.map(
+      (variant) => ({
+        url: `/product/${product.slug}/${variant.slug}`,
+        image: variant.variantImage
+          ? variant.variantImage
+          : variant.images[0].url,
+      })
+    );
+
+    // Return the product in the ProductCardType structure
+    return {
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      rating: product.rating,
+      sales: product.sales,
+      variants,
+      variantImages,
+    };
+  });
+
+  // Retrive products matching the filters
+  const totalCount = products.length;
+
+  // Calculate total pages
+  const totalPages = totalCount / pageSize;
+
+  // Return paginated products and metadata
+  return {
+    products: productsWithFilteredVariants,
+    totalPages,
+    currentPage,
+    pageSize,
+    totalCount,
+  };
 };

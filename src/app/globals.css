@@ -131,7 +131,6 @@
   height: 266.66px;
 }
 
-
 /*--- Delete button----*/
 .Btn {
   z-index: 99;
@@ -201,3 +200,24 @@
 .perspective-1000 {
   perspective: 1000px;
 }
+
+
+/* User Clerk Avatar */
+
+.user-avatar .cl-avatarBox {
+  width: 70px !important;
+  height: 70px !important;
+}
+
+/* custom scrollbar */
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 5px;
+}
+
+

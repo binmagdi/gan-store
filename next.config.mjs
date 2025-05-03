@@ -4,7 +4,10 @@ export default {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
       },
     ],
   },

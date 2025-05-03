@@ -3,6 +3,8 @@ import { clsx, type ClassValue } from "clsx";
 import ColorThief from "colorthief";
 import { twMerge } from "tailwind-merge";
 import { db } from "./db";
+import { Country } from "./types";
+import countries from "@/data/countries.json";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -79,3 +81,36 @@ export const getDominantColors = (imgUrl: string): Promise<string[]> => {
     };
   });
 };
+
+// Define Helper function to get user country
+const DEFAULT_COUNTRY: Country = {
+  name: "Egypt",
+  code: "EG",
+  city: "",
+  region: "",
+};
+
+export async function getUserCountry(): Promise<Country> {
+  let userCountry: Country = DEFAULT_COUNTRY;
+  try {
+    const res = await fetch(
+      `https://ipinfo.io/?token=${process.env.IPINFO_TOKEN}`
+    );
+
+    if (res.ok) {
+      
+      const data = await res.json();
+      userCountry = {
+        name:
+          countries.find((country) => country.code === data.country)?.name ||
+          data.country,
+        code: data.country,
+        city: data.city,
+        region: data.region,
+      };
+    }
+  } catch (error) {
+    console.log("🚀 ~ getUserCountry ~ error:", error);
+  }
+  return userCountry;
+}
