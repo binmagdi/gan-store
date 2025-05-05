@@ -8,6 +8,7 @@ import ProductCardImageSwiper from "./ProductCardImageSwiper";
 import VariantSwitcher from "./VariantSwitcher";
 import { Button } from "@/components/store/ui/button";
 import { Heart } from "lucide-react";
+import ProductPrice from "../../productPage/ProductInfo/ProductPrice";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { name, slug, rating, sales, variantImages, variants } = product;
@@ -45,6 +46,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
               </div>
             )}
             {/* Price */}
+            <ProductPrice sizes={sizes} isCard />
           </Link>
           <div className=" bg-white -0 w-full  pb-4 rounded-b-3xl z-30 space-y-2">
             {/* Variant Switcher */}

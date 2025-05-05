@@ -6,7 +6,7 @@ export default function Links({ subs }: { subs: SubCategory[] }) {
     <div className="grid md:grid-cols-3 gap-4 mt-5 text-sm">
       {/* SubCategories */}
       <div className="spcae-y-4">
-        <h1 className="text-lg font-bold mb-4">Find it Fast</h1>
+        <h1 className="text-base font-bold mb-4 uppercase">Find it Fast</h1>
         <ul className="flex flex-col gap-y-1">
           {subs.map((sub) => (
             <Link key={sub.id} href={`/browse?subCategory=${sub.url}`}>
@@ -18,10 +18,11 @@ export default function Links({ subs }: { subs: SubCategory[] }) {
         </ul>
       </div>
       {/* Profile links */}
-      <div className="space-y-4 md:mt-10">
+      <div className="space-y-4 ">
+        <h1 className="text-base font-bold uppercase">Company info</h1>
         <ul className="flex flex-col gap-y-1">
           {footer_links.slice(0, 6).map((link) => (
-            <Link href={link.link}>
+            <Link key={link.title} href={link.link}>
               <li>
                 <span>{link.title}</span>
               </li>
@@ -30,10 +31,10 @@ export default function Links({ subs }: { subs: SubCategory[] }) {
         </ul>
       </div>
       <div className="space-y-4">
-        <h1 className="text-lg font-bold">Customer care</h1>
+        <h1 className="text-base font-bold uppercase">Customer care</h1>
         <ul className="flex flex-col gap-y-1">
           {footer_links.slice(6).map((link) => (
-            <Link href={link.link}>
+            <Link key={link.title} href={link.link}>
               <li>
                 <span>{link.title}</span>
               </li>

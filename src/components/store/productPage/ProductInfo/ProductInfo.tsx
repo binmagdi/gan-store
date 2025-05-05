@@ -7,6 +7,10 @@ import { FC } from "react";
 import { CopyIcon } from "../../icons";
 import { toast } from "react-hot-toast";
 import ReactStars from "react-rating-stars-component";
+import ProductPrice from "./ProductPrice";
+import Countdown from "../../shared/Countdown";
+import { Separator } from "@/components/ui/separator";
+import ColorWheel from "@/components/shared/ColorWheel";
 
 interface Props {
   productData: ProductPageDataType;
@@ -50,7 +54,6 @@ const ProductInfo: FC<Props> = ({ productData, sizeId, quantity }) => {
           {name} • {variantName}
         </h1>
       </div>
-      {/* Sku - rating - num reviews */}
       <div className="flex items-center text-xs mt-2">
         {/* Store Details */}
         <Link
@@ -67,6 +70,8 @@ const ProductInfo: FC<Props> = ({ productData, sizeId, quantity }) => {
             />
           </div>
         </Link>
+        {/* Sku - rating - num reviews */}
+
         <div className="whitespace-nowrap">
           <span className="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap text-gray-500">
             SKU: {sku}
@@ -100,8 +105,23 @@ const ProductInfo: FC<Props> = ({ productData, sizeId, quantity }) => {
         </div>
       </div>
       <div className="my-2 relative flex flex-col sm:flex-row justify-between">
-        <ProductPrice />
+        <ProductPrice sizeId={sizeId} sizes={sizes} />
+        {isSale && saleEndDate && (
+          <div className="mt-4 pb-2">
+            <Countdown targetDate={saleEndDate} />
+          </div>
+        )}
       </div>
+      <Separator />
+      <div className="mt-4 space-y-2">
+        <div className="relative flex items-center justify-between text-main-primary font-bold">
+          <span className="flex items-center gap-x-2">
+            {colors.length > 1 ? "Colors" : "Color"}
+            <ColorWheel colors={colors} size={25} />
+          </span>
+        </div>
+      </div>
+      {/*  */}
     </div>
   );
 };
