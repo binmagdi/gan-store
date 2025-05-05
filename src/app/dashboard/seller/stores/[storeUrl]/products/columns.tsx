@@ -50,7 +50,7 @@ import Link from "next/link";
 
 export const columns: ColumnDef<StoreProductType>[] = [
   {
-    accessorKey: "image",
+    accessorKey: "name",
     header: "Product Details",
     cell: ({ row }) => {
       return (
@@ -70,7 +70,7 @@ export const columns: ColumnDef<StoreProductType>[] = [
                     className="min-w-40 max-w-40 h-40 rounded-full object-cover shadow-md"
                   />
                   <Link
-                    href={`/dashboard/seller/stores/${row.original.store.url}/products/${row.original.id}/variant/${v.id}`}
+                    href={`/dashboard/seller/stores/${row.original.store.url}/products/${row.original.id}/variants/${v.id}`}
                   >
                     <div className="w-full h-full absolute top-0 left-0 bottom-0 right-0 z-10 rounded-sm bg-black/20 transition-all duration-150 hidden group-hover:block ">
                       <FilePenLineIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white" />
@@ -100,7 +100,7 @@ export const columns: ColumnDef<StoreProductType>[] = [
                             key={size.size}
                             className="w-fit p-1 rounded-md text-[11px] font-medium border-2 bg-white/10 capitalize "
                           >
-                            {size.size} - ({size.quantity}) - {size.price}$
+                            {size.size} - ({size.quantity}) - {size.price}£
                           </span>
                         ))}
                       </div>

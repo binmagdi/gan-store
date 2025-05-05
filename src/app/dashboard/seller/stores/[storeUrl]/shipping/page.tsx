@@ -1,8 +1,10 @@
 import StoreDefaultShippingDetails from "@/components/dashboard/forms/store-default-shipping-details";
 import DataTable from "@/components/ui/data-table";
-import { getStoreDefaultShippingDetails, getStoreShippingRates } from "@/queries/store";
+import {
+  getStoreDefaultShippingDetails,
+  getStoreShippingRates,
+} from "@/queries/store";
 import { redirect } from "next/navigation";
-import React from "react";
 import { columns } from "./columns";
 
 const SellerStoreShippingPage = async ({
@@ -11,21 +13,20 @@ const SellerStoreShippingPage = async ({
   params: { storeUrl: string };
 }) => {
   const shippingDetails = await getStoreDefaultShippingDetails(params.storeUrl);
-  if (!shippingDetails) return redirect("/")
-  const shippingRates = await getStoreShippingRates(params.storeUrl)
-  
+  const shippingRates = await getStoreShippingRates(params.storeUrl);
+  if (!shippingDetails) return redirect("/");
+
   return (
     <div>
       <StoreDefaultShippingDetails
         data={shippingDetails}
         storeUrl={params.storeUrl}
       />
-      <DataTable 
-      filterValue="countyName"
-      data={shippingRates}
-      columns={columns}
-      searchPlaceholder="Search by country name..."
-
+      <DataTable
+        filterValue="countryName"
+        data={shippingRates}
+        searchPlaceholder="Search by country name..."
+        columns={columns}
       />
     </div>
   );

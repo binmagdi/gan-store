@@ -10,7 +10,7 @@ export default async function Footer() {
     <div className="w-full bg-white">
       <NewsLetter />
       <div className="px-4 lg:px-12">
-        <div className="grid md:grid-cols-2 md:gap-x-6 ">
+        <div className="grid md:grid-cols-2 md:gap-x-6 mt-4 ">
         <Contact />
         <Links subs={subs} />
         </div>

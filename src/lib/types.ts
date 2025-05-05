@@ -1,7 +1,17 @@
-import { getAllStoreProducts, getProducts } from "@/queries/product";
+import {
+  getAllStoreProducts,
+  getProductPageData,
+  getProducts,
+  retrieveProducDetails,
+} from "@/queries/product";
 import { getStoreDefaultShippingDetails } from "@/queries/store";
 import { getAllSubCategories } from "@/queries/subCategory";
-import { Prisma, ProductVariantImage, ShippingRate, Size } from "@prisma/client";
+import {
+  Prisma,
+  ProductVariantImage,
+  ShippingRate,
+  Size,
+} from "@prisma/client";
 import countries from "@/data/countries.json";
 
 export interface DashboardSidebarMenuInterface {
@@ -86,7 +96,6 @@ export type ProductType = Prisma.PromiseReturnType<
   typeof getProducts
 >["products"][0];
 
-
 export type VariantSimplified = {
   variantId: string;
   variantSlug: string;
@@ -95,9 +104,15 @@ export type VariantSimplified = {
   sizes: Size[];
 };
 
-
 export type VariantImageType = {
   url: string;
   image: string;
 };
 
+export type ProductPageType = Prisma.PromiseReturnType<
+  typeof retrieveProducDetails
+>;
+
+export type ProductPageDataType = Prisma.PromiseReturnType<
+  typeof getProductPageData
+>;
